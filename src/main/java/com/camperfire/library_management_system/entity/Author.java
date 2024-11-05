@@ -1,5 +1,6 @@
 package com.camperfire.library_management_system.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import lombok.Data;
@@ -16,6 +17,7 @@ import java.util.List;
 @NoArgsConstructor
 
 @Entity
+@Table(name = "authors")
 public class Author {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,5 +33,6 @@ public class Author {
     private LocalDate birthDate;
 
     @OneToMany(mappedBy = "author")
+    @JsonManagedReference
     private List<Book> books = new ArrayList<>();
 }

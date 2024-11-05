@@ -1,5 +1,7 @@
 package com.camperfire.library_management_system.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @NoArgsConstructor
 @Entity
+@Table(name = "books")
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,17 +27,16 @@ public class Book {
     @NonNull
     private int publicationYear;
 
-    private boolean isAvailable = true; // Consider defaulting to true for available books
-
     @NonNull
     @ManyToOne
+    @JsonBackReference
     private Author author;
 
     @ManyToOne
+    @JoinColumn(name = "borrowed_by_id")
+    @JsonManagedReference
     private Member borrowedBy;
 
-    public void setBorrowedBy(Member member) {
-        this.borrowedBy = member;
-        this.isAvailable = (member == null); // Update availability based on whether it's borrowed
-    }
+    @NonNull
+    private String content;
 }
